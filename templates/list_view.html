@@ -1,0 +1,9 @@
+<ul>
+<p>
+    {{ ctx }}:
+</p>
+    {% for item in objects %}
+        <li> <a href="{{ item.get_detail_url }}">{{ item }} </a></li>
+    {% endfor %}
+</ul>
+

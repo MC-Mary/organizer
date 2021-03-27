@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<table class="table">
+    <tbody>
+        <thread class="th_table">
+            <tr>
+                <td>Widok szczegółowy rozwoju dziecka: {{ object.person_full_name }}</td>
+            </tr>
+        </thread>
+        <tr>
+            <td>
+               <ul>
+                    <li> Data wpisu: {{ object.date_of_entry }}</li>
+                    <li> Waga dziecka w kg: {{ object.weight}}</li>
+                    <li> Wzrost dziecka w cm: {{ object.height}}</li>
+                    <li> Obwód głowy dziecka w cm: {{ object.head_circuit}}</li>
+                    <li> Dodatkowe informacje: {{ object.additional_information}}</li>
+                </ul>
+            </td>
+            <td><a href="/childdevelopment/delete/{{object.id}}/">USUŃ WPIS</a></td>
+        </tr>
+        <tr>
+            <td> {{ link }} </td>
+        </tr>
+    </tbody>
+</table>
+
+{% endblock %}
+

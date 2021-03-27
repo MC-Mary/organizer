@@ -1,8 +1,24 @@
 {% extends 'base.html' %}
 {% block content %}
 
-    {% include 'detail_view.html' %}
-    <br>
-    {{ ctx }}
+    <p>
+    Widok szczegółowy szczepionki:
+    </p>
+<ul>
+    <li> Nazwa: {{ object.name_of_vaccine }}</li>
+    <li> id: {{ object.id}}</li>
+    <li> Opis: {{ object.description }}</li>
+    <li> Rekomendowany wiek: {{ object.recommended_age }}</li>
+    <li> Typ szczepionki: {{ object.get_type_display }}</li>
+</ul>
+    <p>
+    {% if prev %}
+    <a href="{{ prev }}">COFNIJ DO SZCZEPIENIA DZIECKA</a>
+    {% endif %}
+    </p>
+    <p>
+        {{ link }}
+    </p>
+
 
 {% endblock %}

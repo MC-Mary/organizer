@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<table class="table">
+    <tbody>
+        <thread class="th_table">
+            <tr>
+                <td>{{ person_detail.first_name }} {{ person_detail.second_name }}</td>
+            </tr>
+        </thread>
+        <tr>
+            <th>DANE SZCZEGÓŁOWE</th>
+        </tr>
+        <tr>
+            <td>
+                Data urodzenia: {{ person_detail.date_of_birth }}<br>
+                Płeć: {{ person_detail.get_gender_display}}<br>
+                Aktualny wiek: {{ person_age }}
+            </td>
+            <td><a href="/person/delete/{{person_detail.id}}/">USUŃ WPIS</a></td>
+        </tr>
+        <tr>
+            <th>ROZWÓJ DZIECKA</th>
+        </tr>
+        <tr>
+            <td>
+                Ostatnia waga dziecka (kg): {{ last_child_development_detail.weight }} <br>
+                Ostatni wzrost dziecka (cm): {{ last_child_development_detail.height }} <br>
+                Ostatni obwód głowy dziecka (cm): {{ last_child_development_detail.head_circuit }} <br>
+            </td>
+            <td><a href={{ last_child_development_detail.get_detail_url }}>PRZEJDŹ DO SZCZEGÓŁÓW</a></td>
+            <td>
+                <ul>
+                    {% for obj in child_development_detail %}
+                    <li><a href={{ obj.get_detail_url }}>{{ obj}}</a></li>
+                    {% endfor %}
+                </ul>
+            </td>
+        </tr>
+        <tr>
+            <th>SZCZEPIENIA WYMAGANE</th>
+            <th>SZCZEPIENIA WYBRANE-ZALECANE</th>
+        </tr>
+        <tr>
+            <td>
+                <ul>
+                {% for item in person_detail.vaccines.all%}
+                    <li><a href="/vaccination/{{ person_detail.id }}/{{ item.id }}/"> {{item}} </a></li>
+                {% endfor %}
+                </ul>
+            </td>
+        </tr>
+    </tbody>
+</table>
+{% endblock %}

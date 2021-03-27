@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<table class="table">
+    <tbody>
+        <thread class="th_table">
+            <tr>
+                <td>Widok szczegółowy szczepienia:</td>
+            </tr>
+        </thread>
+        <tr>
+            <td>
+               <ul>
+                    <li> Zaszczepione dziecko: {{ person_detail }}</li>
+                    <li> Szczepionka: <a href="{{ object.get_detail_url }}?prev={{ request.path|urlencode }}">{{ object.name_of_vaccine }} </a></li>
+                    <li> Data zaszczepienia: {{ vaccination_detail.date_of_vaccination }}</li>
+                    <li> Dodatkowe informacje: {{ vaccination_detail.additional }}</li>
+                </ul>
+            </td>
+            <td><a href="/vaccination/delete/{{person_detail.id}}/{{object.id}}/">USUŃ WPIS</a></td>
+        </tr>
+    </tbody>
+</table>
+
+{% endblock %}
+
