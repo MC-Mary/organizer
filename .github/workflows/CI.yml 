@@ -1,17 +1,17 @@
-name:
-Linting and testson:
+name: Linting and tests
+on:
   push:
     branches:
     - main
   pull_request:
     types: [opened, synchronize, reopened]
-    jobs:
+jobs:
   lint-and-test:
-  runs-on: ubuntu-latest
+    runs-on: ubuntu-latest
     strategy:
       matrix:
         python-version: [3.8]
-        services:
+    services:
       postgres:
         image: postgres:12.6
         env:
@@ -39,7 +39,6 @@ Linting and testson:
         pycodestyle . --exclude=migrations --max-line-length=110
     - name: Automated tests
       run: |
-        pip install pytest-django
         pytest
     - name: Coverage
       run: |
