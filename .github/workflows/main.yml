@@ -42,6 +42,7 @@ jobs:
           pycodestyle . --exclude=migrations --max-line-length=110
       - name: Automated tests
         run: |
+          pip install pytest-django
           pytest
       - name: Coverage
         run: |
