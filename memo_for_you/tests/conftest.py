@@ -60,7 +60,8 @@ def vaccine():
 def person():
     person_list = []
     for x in range(10):
-        p = Person.objects.create(first_name=str(x), second_name=str(x), date_of_birth='2020-03-03', gender='1')
+        p = Person.objects.create(first_name=str(x), second_name=str(x), date_of_birth='2020-03-03',
+                                  gender='1')
         person_list.append(p)
     return person_list
 

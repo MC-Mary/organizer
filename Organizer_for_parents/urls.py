@@ -33,7 +33,8 @@ urlpatterns = [
          name='delete_vaccination'),
     path('childdevelopment/delete/<int:id>/', views.DeleteChildDevelopment.as_view(),
          name='delete_child_development'),
-    # path('childdevelopment/edit/<int:pk>/', views.EditChildDevelopment.as_view(), name='edit_child_development'),
+    # path('childdevelopment/edit/<int:pk>/', views.EditChildDevelopment.as_view(),
+    #     name='edit_child_development'),
 
     path('login/', views.LoginView.as_view(), name='login'),
     path('logout/', views.LogoutView.as_view(), name='logout'),

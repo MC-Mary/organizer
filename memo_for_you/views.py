@@ -145,7 +145,8 @@ class DetailVaccination(LoginRequiredMixin, View):
         vaccine_detail = Vaccine.objects.get(id=vaccine_id)
         person_detail = Person.objects.get(id=person_id)
         vaccination_detail = Vaccination.objects.get(vaccine_id=vaccine_id, person_id=person_id)
-        ctx = {'object': vaccine_detail, 'person_detail': person_detail, 'vaccination_detail': vaccination_detail}
+        ctx = {'object': vaccine_detail, 'person_detail': person_detail,
+               'vaccination_detail': vaccination_detail}
         return render(request, 'detail_vaccination_view.html', ctx)
 
 

@@ -26,7 +26,8 @@ class PersonForm(forms.Form):
     second_name = forms.CharField(label="Podaj nazwisko", validators=[check_length])
     date_of_birth = forms.DateField(label="Podaj datę urodzenia dziecka", help_text="RRRR-MM-DD")
     gender = forms.ChoiceField(label='Podaj płeć dziecka', choices=GENDER)
-    # vaccines = forms.ModelMultipleChoiceField(queryset=Vaccine.objects.all(), widget=forms.CheckboxSelectMultiple)
+    # vaccines = forms.ModelMultipleChoiceField(queryset=Vaccine.objects.all(),
+    # widget=forms.CheckboxSelectMultiple)
 
 
 class VaccinationForm(forms.Form):
