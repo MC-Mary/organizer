@@ -14,7 +14,7 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import path
 from memo_for_you import views
 
 urlpatterns = [
@@ -25,12 +25,14 @@ urlpatterns = [
     path('addchilddevelopment/', views.AddChildDevelopment.as_view(), name='add_child_development'),
     path('person/<int:id>/', views.DetailPerson.as_view(), name='person'),
     path('vaccine/<int:id>/', views.DetailVaccine.as_view(), name='vaccine'),
-    path('vaccination/<int:person_id>/<int:vaccine_id>/', views.DetailVaccination.as_view(), name='vaccination'),
+    path('vaccination/<int:person_id>/<int:vaccine_id>/', views.DetailVaccination.as_view(),
+         name='vaccination'),
     path('childdevelopment/<int:id>/', views.DetailChildDevelopment.as_view(), name='child_development'),
     path('person/delete/<int:id>/', views.DeletePerson.as_view(), name='delete_person'),
     path('vaccination/delete/<int:person_id>/<int:vaccine_id>/', views.DeleteVaccination.as_view(),
          name='delete_vaccination'),
-    path('childdevelopment/delete/<int:id>/', views.DeleteChildDevelopment.as_view(), name='delete_child_development'),
+    path('childdevelopment/delete/<int:id>/', views.DeleteChildDevelopment.as_view(),
+         name='delete_child_development'),
     # path('childdevelopment/edit/<int:pk>/', views.EditChildDevelopment.as_view(), name='edit_child_development'),
 
     path('login/', views.LoginView.as_view(), name='login'),

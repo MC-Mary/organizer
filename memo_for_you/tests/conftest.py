@@ -10,6 +10,7 @@ def client():
     c = Client()
     return c
 
+
 @pytest.fixture
 def users():
     users = []
@@ -17,6 +18,7 @@ def users():
         u = User.objects.create(username=str(x))
         users.append(u)
     return users
+
 
 @pytest.fixture
 def vaccine():
@@ -43,7 +45,8 @@ def vaccine():
 #     count = 1
 #     person_list = []
 #     for v in vaccine:
-#         p = Person.objects.create(first_name=str(count), second_name=str(count+1), date_of_birth='2020-03-03', gender='1')
+#         p = Person.objects.create(first_name=str(count), second_name=str(count+1),
+#         date_of_birth='2020-03-03', gender='1')
 #         p.vaccines.set(v)
 #         count += 1
 #         person_list.append(p)
@@ -51,6 +54,8 @@ def vaccine():
 
 # 2 OPCJA:
 # W tym wypadku podkreśla się  p.vaccines.add(vaccine[x])
+
+
 @pytest.fixture
 def person():
     person_list = []
@@ -58,6 +63,7 @@ def person():
         p = Person.objects.create(first_name=str(x), second_name=str(x), date_of_birth='2020-03-03', gender='1')
         person_list.append(p)
     return person_list
+
 
 @pytest.fixture
 def vaccination(vaccine, person):
@@ -67,6 +73,7 @@ def vaccination(vaccine, person):
                                         date_of_vaccination='2020-03-03', additional='dodatkowe informacje')
         vaccination_list.append(vc)
     return vaccination_list
+
 
 @pytest.fixture
 def child_development(person):
@@ -79,6 +86,7 @@ def child_development(person):
         child_development_list.append(chd)
     return child_development_list
 
+
 @pytest.fixture
 def diet():
     diet_list = []
@@ -86,7 +94,3 @@ def diet():
         d = Diet.objects.create(age_of_child=x, nature_feeding=str(x), artificial_feeding='No')
         diet_list.append(d)
     return diet_list
-
-
-
-

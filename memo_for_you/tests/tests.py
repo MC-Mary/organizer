@@ -1,6 +1,6 @@
 import pytest
 from django.urls import reverse
-from memo_for_you.models import Vaccine, Person, Vaccination, ChildDevelopment
+
 
 def test_check_base(client):
     response = client.get(reverse('base'))

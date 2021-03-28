@@ -1,10 +1,10 @@
 from django.db import models
 
-
 TYPE_OF_VACCINE = (
     (1, "Obowiązkowe"),
     (2, "Wybrane_zalecane"),
 )
+
 
 class Vaccine(models.Model):
     name_of_vaccine = models.CharField(max_length=80, unique=True)
@@ -18,10 +18,12 @@ class Vaccine(models.Model):
     def get_detail_url(self):
         return f"/vaccine/{self.id}"
 
+
 GENDER = (
     ("F", "Kobieta"),
     ("M", "Mężczyzna"),
 )
+
 
 class Person(models.Model):
     first_name = models.CharField(max_length=50)
@@ -44,7 +46,6 @@ class Vaccination(models.Model):
     additional = models.TextField(null=True)
 
 
-
 class ChildDevelopment(models.Model):
     person_full_name = models.ForeignKey(Person, on_delete=models.CASCADE)
     date_of_entry = models.DateField()
@@ -60,11 +61,11 @@ class ChildDevelopment(models.Model):
         return f"/childdevelopment/{self.id}"
 
 
-
 class Diet(models.Model):
     age_of_child = models.IntegerField()
     nature_feeding = models.TextField()
     artificial_feeding = models.TextField()
+
 
 ALLERGENS = (
     (1, "bez laktozy"),
@@ -73,6 +74,7 @@ ALLERGENS = (
     (4, "bez żółtka"),
     (5, "bez żółtka"),
 )
+
 
 class Recipe(models.Model):
     name = models.CharField(max_length=255)
@@ -106,11 +108,3 @@ class MedicalClinic(models.Model):
     treatment = models.TextField()
     recommendation = models.TextField(null=True)
     additional = models.TextField(null=True)
-
-
-
-
-
-
-
-

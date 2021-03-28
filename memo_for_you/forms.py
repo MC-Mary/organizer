@@ -9,6 +9,7 @@ class LoginForm(forms.Form):
     username = forms.CharField(label="Podaj login")
     password = forms.CharField(label="Podaj hasło", widget=forms.PasswordInput)
 
+
 class RegisterForm(forms.Form):
     username = forms.CharField(label="Podaj login", widget=forms.TextInput(attrs={"autocomplete": "off"}))
     password1 = forms.CharField(label="Podaj haslo", widget=forms.PasswordInput)
@@ -45,5 +46,3 @@ class ChildDevelopmentForm(forms.Form):
     height = forms.FloatField(label="Wzrost dziecka", help_text="Wzrost w cm", validators=[check_height])
     head_circuit = forms.FloatField(label="Obwód głowy dziecka", help_text="Obwód głowy w cm")
     additional_information = forms.CharField(label="Informacje dodatkowe", widget=forms.Textarea)
-
-
