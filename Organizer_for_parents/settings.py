@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/3.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.1/ref/settings/
 """
-
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -119,3 +119,16 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 LOGIN_URL = '/login/'
+
+
+if os.environ.get('GITHUB_WORKFLOW'):
+    DATABASES = {
+        'default': {
+           'ENGINE': 'django.db.backends.postgresql_psycopg2',
+           'NAME': 'github_actions',
+           'USER': "postgres",
+           'PASSWORD': "postgres",
+           'HOST': 'localhost',
+           'PORT': 5432,
+        }
+    }
