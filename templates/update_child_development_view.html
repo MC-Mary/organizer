@@ -6,7 +6,7 @@
 
         <p><label for="person"> Wybierz dziecko:</label>
             <select name="person">
-                {% for item in person_detail %}
+                {% for item in persons %}
                     {% if item == child_development_detail.person %}
                         <option selected value="{{ item.id }}">{{ item }}</option>
                     {% else %}

@@ -5,7 +5,7 @@ from django.shortcuts import render, redirect
 from datetime import datetime
 
 from memo_for_you.forms import PersonForm, VaccinationForm, ChildDevelopmentForm, LoginForm, RegisterForm
-from memo_for_you.models import Vaccine, Person, Vaccination, ChildDevelopment, Diet
+from memo_for_you.models import Vaccine, Person, Vaccination, ChildDevelopment, Diet, GENDER
 from django.urls import reverse
 from django.views import View
 
@@ -110,22 +110,23 @@ class DeletePerson(LoginRequiredMixin, View):
 
 class UpdatePerson(LoginRequiredMixin, View):
     def get(self, request, id):
-        person_id = Person.objects.get(id=id)
-        persons = Person.objects.all()
-        return render(request, 'update_person_view.html', {'persons': persons, 'person_id': person_id})
+        person_detail = Person.objects.get(id=id)
+        gender_name = GENDER
+        return render(request, 'update_person_view.html',
+                      {'gender_name': gender_name, 'person_detail': person_detail})
 
     def post(self, request, id):
-        person_id = Person.objects.get(id=id)
+        person_detail = Person.objects.get(id=id)
         first_name = request.POST.get('first_name')
         second_name = request.POST.get('second_name')
         date_of_birth = request.POST.get('date_of_birth')
         gender = request.POST.get('gender')
 
-        person_id.first_name = first_name
-        person_id.second_name = second_name
-        person_id.date_of_birth = date_of_birth
-        person_id.gender = gender
-        person_id.save()
+        person_detail.first_name = first_name
+        person_detail.second_name = second_name
+        person_detail.date_of_birth = date_of_birth
+        person_detail.gender = gender
+        person_detail.save()
 
         return redirect(reverse('add_person'))
 
@@ -194,6 +195,7 @@ class AddChildDevelopment(LoginRequiredMixin, View):
 class DetailChildDevelopment(LoginRequiredMixin, View):
     def get(self, request, id):
         child_development_detail = ChildDevelopment.objects.get(id=id)
+        gender_of_the_child = child_development_detail.person.get_gender_display()
 
         person_age_on_measurement_day_in_days = \
             (child_development_detail.date_of_entry - child_development_detail.person.date_of_birth).days
@@ -201,7 +203,7 @@ class DetailChildDevelopment(LoginRequiredMixin, View):
         person_age_on_measurement_day_in_months = int(person_age_on_measurement_day_in_weeks // 4.33)
         person_age_on_measurement_day_in_years = round((person_age_on_measurement_day_in_weeks / 52), 1)
 
-        ctx = {'object': child_development_detail,
+        ctx = {'object': child_development_detail, 'gender_of_the_child': gender_of_the_child,
                'person_age_on_measurement_day_in_months': person_age_on_measurement_day_in_months,
                'person_age_on_measurement_day_in_days': person_age_on_measurement_day_in_days,
                'person_age_on_measurement_day_in_years': person_age_on_measurement_day_in_years}
@@ -220,7 +222,7 @@ class UpdateChildDevelopment(LoginRequiredMixin, View):
         child_development_detail = ChildDevelopment.objects.get(id=id)
         persons = Person.objects.all()
         return render(request, 'update_child_development_view.html',
-                      {'child_development_detail': child_development_detail, 'person_detail': persons})
+                      {'child_development_detail': child_development_detail, 'persons': persons})
 
     def post(self, request, id):
         child_development_detail = ChildDevelopment.objects.get(id=id)
@@ -232,16 +234,6 @@ class UpdateChildDevelopment(LoginRequiredMixin, View):
         additional_information = request.POST.get('additional_information')
         person_detail = Person.objects.get(id=person_id)
 
-        # if not date_of_entry:
-        #     return render(request, 'update_child_development_view.html',
-        #                   {'error': 'Uwaga - nie ma wpisanej daty wpisu'})
-        # if int(weight) <= 0:
-        #     return render(request, 'update_child_development_view.html',
-        #                   {'error': 'Uwaga - zła waga wpisana'})
-        # if int(height) <= 0:
-        #     return render(request, 'update_child_development_view.html',
-        #                   {'error': 'Uwaga - zły wzrost wpisany'})
-        # else:
         child_development_detail.person = person_detail
         child_development_detail.date_of_entry = date_of_entry
         child_development_detail.weight = weight
@@ -255,12 +247,12 @@ class UpdateChildDevelopment(LoginRequiredMixin, View):
 # class UpdateChildDevelopment(LoginRequiredMixin, View):
 #     def get(self, request, id):
 #         child_development_detail = ChildDevelopment.objects.get(pk=id)
-#         form = UpdateChildDevelopmentForm(instance=child_development_detail)
+#         form = ChildDevelopmentForm(instance=child_development_detail)
 #         return render(request, 'object_update_view.html', {'update_form': form})
 #
 #     def post(self, request, id):
 #         child_development_detail = ChildDevelopment.objects.get(pk=id)
-#         form = UpdateChildDevelopmentForm(request.POST, instance=child_development_detail)
+#         form = ChildDevelopmentForm(request.POST, instance=child_development_detail)
 #
 #         if form.is_valid():
 #             form.save()

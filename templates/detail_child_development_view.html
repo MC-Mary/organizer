@@ -6,7 +6,8 @@
     <tbody>
         <thead class="th_table">
             <tr>
-                <td>Widok szczegółowy rozwoju dziecka: {{ object.person }}</td>
+                <td>Widok szczegółowy rozwoju dziecka: </td>
+                <td>{{ object.person }}</td>
             </tr>
             <tr>
                 <td>Data urodzenia dziecka: {{object.person.date_of_birth}}</td>
@@ -16,21 +17,23 @@
             <td>
                <ul>
                    <li> Data wpisu: {{ object.date_of_entry }}</li>
-                   <li> Wiek dziecka w dniu wpisu: {{ person_age_on_measurement_day_in_days }}
+                   <li> Płeć dziecka: {{ gender_of_the_child }}</li><br>
+                   <li> Wiek dziecka w dniu wpisu: <br>
+                        {{ person_age_on_measurement_day_in_days }}
                         {% if person_age_on_measurement_day_in_days == 1 %}
                             dzień
                         {% else %}
                             dni
-                        {% endif %}
-                        // {{ person_age_on_measurement_day_in_months }}
+                        {% endif %}<br>
+                        {{ person_age_on_measurement_day_in_months }}
                         {% if person_age_on_measurement_day_in_months  == 1 %}
                             miesiąc
                         {% elif 5 > person_age_on_measurement_day_in_months and person_age_on_measurement_day_in_months >= 2 %}
                             miesiące
                         {% else %}
                             miesięcy
-                        {% endif %}
-                        // {{ person_age_on_measurement_day_in_years }}
+                        {% endif %}<br>
+                        {{ person_age_on_measurement_day_in_years }}
                         {% if person_age_on_measurement_day_in_years  == 1 %}
                             rok
                         {% elif 5 > person_age_on_measurement_day_in_years and person_age_on_measurement_day_in_years >= 2 %}
@@ -38,25 +41,70 @@
                         {% else %}
                             lat
                         {% endif %}
-                   </li>
+                   </li><br>
                    <li> Waga dziecka: {{ object.weight}} kg</li>
                    <li> Wzrost dziecka: {{ object.height}} cm</li>
-                   <li> Obwód głowy dziecka: {{ object.head_circuit}} cm</li>
-                   <li> Dodatkowe informacje: {{ object.additional_information}}</li>
+                   <li> Obwód głowy dziecka: {{ object.head_circuit}} cm</li><br>
+                   <li> Dodatkowe informacje: {{ object.additional_information}}</li><br>
+                   <p><a href="/childdevelopment/delete/{{object.id}}/">USUŃ WPIS</a></p>
+                   <p><a href="/childdevelopment/update/{{object.id}}/">EDYTUJ WPIS</a></p>
                </ul>
-            <p><a href="/childdevelopment/delete/{{object.id}}/">USUŃ WPIS</a></p>
-            <p><a href="/childdevelopment/update/{{object.id}}/">EDYTUJ WPIS</a></p>
             </td>
-            <td> <img src="{% static 'jpg/f_obw_glowy.jpg' %}" width="500"
-                      title="siatka centylowa dziewczynka obwód głowy"> </td>
+            <td>
+                <div id="carousel-percentile_grid" class="carousel slide">
+                    <!-- Wskaźniki w postaci kropek -->
+                    <ul class="carousel-indicators">
+                        <li data-target="#carousel-percentile_grid" data-slide-to="0" class="active"></li>
+                        <li data-target="#carousel-percentile_grid" data-slide-to="1"></li>
+                        <li data-target="#carousel-percentile_grid" data-slide-to="2"></li>
+                    </ul>
+                    <!-- Slajdy -->
+                    {% if gender_of_the_child == "Kobieta" %}
+                    <div class="carousel-inner">
+                        <div class="item active">
+                            <img src="{% static 'jpg/f_waga.jpg' %}" width="700"
+                                 title="siatka centylowa dziewczynka waga">
+                        </div>
+                        <div class="item">
+                            <img src="{% static 'jpg/f_wzrost.jpg' %}" width="700"
+                                 title="siatka centylowa dziewczynka wzrost">
+                        </div>
+                        <div class="item">
+                            <img src="{% static 'jpg/f_obw_glowy.jpg' %}" width="700"
+                                 title="siatka centylowa dziewczynka obwód głowy">
+                        </div>
+                    </div>
+                    {% else %}
+                    <div class="carousel-inner">
+                        <div class="item active">
+                            <img src="{% static 'jpg/m_waga.jpg' %}" width="700"
+                                 title="siatka centylowa chłopiec waga">
+                        </div>
+
+                        <div class="item">
+                            <img src="{% static 'jpg/m_wzrost.jpg' %}" width="700"
+                                 title="siatka centylowa chłopiec wzrost">
+                        </div>
+
+                        <div class="item">
+                            <img src="{% static 'jpg/m_obw_glowy.jpg' %}" width="700"
+                                 title="siatka centylowa chłopiec obwód głowy">
+                        </div>
+                    </div>
+                    {% endif %}
+                    <!-- Strzałki do przewijania -->
+                    <a class="left carousel-control" href="#carousel-percentile_grid" data-slide="prev">
+                    <span class="icon-prev"></span></a>
+                    <a class="right carousel-control" href="#carousel-percentile_grid" data-slide="next">
+                    <span class="icon-next"></span></a>
+                </div>
+            </td>
         </tr>
         <tr>
-            <td> <img src="{% static 'jpg/f_wzrost.jpg' %}" width="500"
-                      title="siatka centylowa dziewczynka wzrost"> </td>
-            <td> <img src="{% static 'jpg/f_waga.jpg' %}" width="500"
-                      title="siatka centylowa dziewczynka waga"> </td>
+
         </tr>
 </table>
 
 {% endblock %}
+
 
