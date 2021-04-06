@@ -47,7 +47,7 @@ class Vaccination(models.Model):
 
 
 class ChildDevelopment(models.Model):
-    person_full_name = models.ForeignKey(Person, on_delete=models.CASCADE)
+    person = models.ForeignKey(Person, on_delete=models.CASCADE)
     date_of_entry = models.DateField()
     weight = models.FloatField()
     height = models.FloatField()
@@ -55,7 +55,7 @@ class ChildDevelopment(models.Model):
     additional_information = models.TextField(null=True)
 
     def __str__(self):
-        return f"{self.person_full_name} {self.date_of_entry}"
+        return f"{self.person} {self.date_of_entry}"
 
     def get_detail_url(self):
         return f"/childdevelopment/{self.id}"
@@ -66,6 +66,8 @@ class Diet(models.Model):
     nature_feeding = models.TextField()
     artificial_feeding = models.TextField()
 
+    def __str__(self):
+        return f"{self.age_of_child}"
 
 ALLERGENS = (
     (1, "bez laktozy"),

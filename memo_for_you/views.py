@@ -5,7 +5,7 @@ from django.shortcuts import render, redirect
 from datetime import datetime
 
 from memo_for_you.forms import PersonForm, VaccinationForm, ChildDevelopmentForm, LoginForm, RegisterForm
-from memo_for_you.models import Vaccine, Person, Vaccination, ChildDevelopment
+from memo_for_you.models import Vaccine, Person, Vaccination, ChildDevelopment, Diet
 from django.urls import reverse
 from django.views import View
 
@@ -73,10 +73,60 @@ class AddPerson(LoginRequiredMixin, View):
                                                          'ctx': 'Lista wszystkich osób w serwisie'})
 
 
+class DetailPerson(LoginRequiredMixin, View):
+    def get(self, request, id):
+        person_detail = Person.objects.get(id=id)
+        person_age_in_days = (datetime.now().date() - person_detail.date_of_birth).days
+        person_age_in_weeks = person_age_in_days // 7
+        person_age_in_months = int(person_age_in_weeks // 4.33)
+        person_age_in_years = round((person_age_in_weeks / 52), 1)
+
+        recommended_diet = Diet.objects.all()
+        diet_for_person_age_in_months = Diet.objects.filter(age_of_child__icontains=person_age_in_months)
+
+        child_development_detail = list(ChildDevelopment.objects.filter(
+            person__first_name__icontains=person_detail.first_name,
+            person__second_name__icontains=person_detail.second_name).order_by('date_of_entry'))
+        if child_development_detail:
+            last_child_development_detail = child_development_detail[-1]
+        else:
+            last_child_development_detail = None
+
+        ctx = {'person_detail': person_detail, 'child_development_detail': child_development_detail,
+               'last_child_development_detail': last_child_development_detail,
+               'person_age_in_weeks': person_age_in_weeks, 'person_age_in_days': person_age_in_days,
+               'person_age_in_months': person_age_in_months, 'person_age_in_years': person_age_in_years,
+               'recommended_diet': recommended_diet,
+               'diet_for_person_age_in_months': diet_for_person_age_in_months}
+        return render(request, 'detail_person_view.html', ctx)
+
+
 class DeletePerson(LoginRequiredMixin, View):
     def get(self, request, id):
         person_id = Person.objects.get(id=id)
         person_id.delete()
+        return redirect(reverse('add_person'))
+
+
+class UpdatePerson(LoginRequiredMixin, View):
+    def get(self, request, id):
+        person_id = Person.objects.get(id=id)
+        persons = Person.objects.all()
+        return render(request, 'update_person_view.html', {'persons': persons, 'person_id': person_id})
+
+    def post(self, request, id):
+        person_id = Person.objects.get(id=id)
+        first_name = request.POST.get('first_name')
+        second_name = request.POST.get('second_name')
+        date_of_birth = request.POST.get('date_of_birth')
+        gender = request.POST.get('gender')
+
+        person_id.first_name = first_name
+        person_id.second_name = second_name
+        person_id.date_of_birth = date_of_birth
+        person_id.gender = gender
+        person_id.save()
+
         return redirect(reverse('add_person'))
 
 
@@ -106,40 +156,6 @@ class DeleteVaccination(LoginRequiredMixin, View):
         return redirect(reverse('add_person'))
 
 
-class AddChildDevelopment(LoginRequiredMixin, View):
-    def get(self, request):
-        form = ChildDevelopmentForm()
-        child_development = ChildDevelopment.objects.all().order_by('person_full_name', 'date_of_entry')
-        return render(request, 'object_list_view.html', {'form': form, 'objects': child_development,
-                                                         'ctx': 'Lista wszystkich wpisów'})
-
-    def post(self, request):
-        form = ChildDevelopmentForm(request.POST)
-        child_development = ChildDevelopment.objects.all()
-        if form.is_valid():
-            ChildDevelopment.objects.create(**form.cleaned_data)
-            return redirect('add_child_development')
-        return render(request, 'object_list_view.html', {'form': form, 'objects': child_development,
-                                                         'ctx': 'Lista wszystkich wpisów'})
-
-
-class DetailPerson(LoginRequiredMixin, View):
-    def get(self, request, id):
-        person_detail = Person.objects.get(id=id)
-        person_age = (datetime.now().date() - person_detail.date_of_birth)
-        child_development_detail = list(ChildDevelopment.objects.filter(
-            person_full_name__first_name__icontains=person_detail.first_name,
-            person_full_name__second_name__icontains=person_detail.second_name).order_by('date_of_entry'))
-        if child_development_detail:
-            last_child_development_detail = child_development_detail[-1]
-        else:
-            last_child_development_detail = None
-
-        ctx = {'person_detail': person_detail, 'child_development_detail': child_development_detail,
-               'last_child_development_detail': last_child_development_detail, 'person_age': person_age}
-        return render(request, 'detail_person_view.html', ctx)
-
-
 class DetailVaccination(LoginRequiredMixin, View):
     def get(self, request, person_id, vaccine_id):
         vaccine_detail = Vaccine.objects.get(id=vaccine_id)
@@ -153,20 +169,42 @@ class DetailVaccination(LoginRequiredMixin, View):
 class DetailVaccine(View):
     def get(self, request, id):
         vaccine_detail = Vaccine.objects.get(id=id)
-        prev = self.request.GET.get('prev')
-        # if not prev.startswith("/vaccination/"):
-        #     prev = None
-        ctx = {'object': vaccine_detail, 'prev': prev,
-               'link': '*** W przyszłosci można dodać linki/odnośniki do literatury '
-                       'medycznej na temat wybranej szczepionki ***'}
+        child_details = self.request.GET.get('person')
+        ctx = {'object': vaccine_detail, 'child_details': child_details}
         return render(request, 'detail_vaccine_view.html', ctx)
+
+
+class AddChildDevelopment(LoginRequiredMixin, View):
+    def get(self, request):
+        form = ChildDevelopmentForm()
+        child_development = ChildDevelopment.objects.all().order_by('person', 'date_of_entry')
+        return render(request, 'object_list_view.html', {'form': form, 'objects': child_development,
+                                                         'ctx': 'Lista wszystkich wpisów'})
+
+    def post(self, request):
+        form = ChildDevelopmentForm(request.POST)
+        child_development = ChildDevelopment.objects.all()
+        if form.is_valid():
+            ChildDevelopment.objects.create(**form.cleaned_data)
+            return redirect('add_child_development')
+        return render(request, 'object_list_view.html', {'form': form, 'objects': child_development,
+                                                         'ctx': 'Lista wszystkich wpisów'})
 
 
 class DetailChildDevelopment(LoginRequiredMixin, View):
     def get(self, request, id):
         child_development_detail = ChildDevelopment.objects.get(id=id)
+
+        person_age_on_measurement_day_in_days = \
+            (child_development_detail.date_of_entry - child_development_detail.person.date_of_birth).days
+        person_age_on_measurement_day_in_weeks = person_age_on_measurement_day_in_days // 7
+        person_age_on_measurement_day_in_months = int(person_age_on_measurement_day_in_weeks // 4.33)
+        person_age_on_measurement_day_in_years = round((person_age_on_measurement_day_in_weeks / 52), 1)
+
         ctx = {'object': child_development_detail,
-               'link': '*** W przyszłosci można przedstawić pojedyńcze wyniki na siatce centylowej ***'}
+               'person_age_on_measurement_day_in_months': person_age_on_measurement_day_in_months,
+               'person_age_on_measurement_day_in_days': person_age_on_measurement_day_in_days,
+               'person_age_on_measurement_day_in_years': person_age_on_measurement_day_in_years}
         return render(request, 'detail_child_development_view.html', ctx)
 
 
@@ -177,9 +215,53 @@ class DeleteChildDevelopment(LoginRequiredMixin, View):
         return redirect(reverse('add_person'))
 
 
-# class EditChildDevelopment(LoginRequiredMixin, UpdateView):
+class UpdateChildDevelopment(LoginRequiredMixin, View):
+    def get(self, request, id):
+        child_development_detail = ChildDevelopment.objects.get(id=id)
+        persons = Person.objects.all()
+        return render(request, 'update_child_development_view.html',
+                      {'child_development_detail': child_development_detail, 'person_detail': persons})
+
+    def post(self, request, id):
+        child_development_detail = ChildDevelopment.objects.get(id=id)
+        person_id = request.POST.get('person')
+        date_of_entry = request.POST.get('date_of_entry')
+        weight = request.POST.get('weight')
+        height = request.POST.get('height')
+        head_circuit = request.POST.get('head_circuit')
+        additional_information = request.POST.get('additional_information')
+        person_detail = Person.objects.get(id=person_id)
+
+        # if not date_of_entry:
+        #     return render(request, 'update_child_development_view.html',
+        #                   {'error': 'Uwaga - nie ma wpisanej daty wpisu'})
+        # if int(weight) <= 0:
+        #     return render(request, 'update_child_development_view.html',
+        #                   {'error': 'Uwaga - zła waga wpisana'})
+        # if int(height) <= 0:
+        #     return render(request, 'update_child_development_view.html',
+        #                   {'error': 'Uwaga - zły wzrost wpisany'})
+        # else:
+        child_development_detail.person = person_detail
+        child_development_detail.date_of_entry = date_of_entry
+        child_development_detail.weight = weight
+        child_development_detail.height = height
+        child_development_detail.head_circuit = head_circuit
+        child_development_detail.additional_information = additional_information
+        child_development_detail.save()
+        return redirect(reverse('add_child_development'))
+
+
+# class UpdateChildDevelopment(LoginRequiredMixin, View):
+#     def get(self, request, id):
+#         child_development_detail = ChildDevelopment.objects.get(pk=id)
+#         form = UpdateChildDevelopmentForm(instance=child_development_detail)
+#         return render(request, 'object_update_view.html', {'update_form': form})
 #
-#     form_class = ChildDevelopmentForm
-#     template_name = 'edit_child_development_view.html'
-#     def get_success_url(self):
-#         return self.object.person_full_name.get_detail_url()
+#     def post(self, request, id):
+#         child_development_detail = ChildDevelopment.objects.get(pk=id)
+#         form = UpdateChildDevelopmentForm(request.POST, instance=child_development_detail)
+#
+#         if form.is_valid():
+#             form.save()
+#             return redirect(reverse('add_person'))

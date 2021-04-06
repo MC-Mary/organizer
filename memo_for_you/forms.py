@@ -1,7 +1,7 @@
 from django import forms
 from django.core.exceptions import ValidationError
 
-from memo_for_you.models import GENDER, Vaccine, Person
+from memo_for_you.models import GENDER, Vaccine, Person, ChildDevelopment
 from memo_for_you.validators import check_length,  check_weight, check_height
 
 
@@ -27,7 +27,6 @@ class PersonForm(forms.Form):
     date_of_birth = forms.DateField(label="Podaj datę urodzenia dziecka", help_text="RRRR-MM-DD")
     gender = forms.ChoiceField(label='Podaj płeć dziecka', choices=GENDER)
     # vaccines = forms.ModelMultipleChoiceField(queryset=Vaccine.objects.all(),
-    # widget=forms.CheckboxSelectMultiple)
 
 
 class VaccinationForm(forms.Form):
@@ -40,10 +39,12 @@ class VaccinationForm(forms.Form):
 
 
 class ChildDevelopmentForm(forms.Form):
-    person_full_name = forms.ModelChoiceField(label="Wybierz dziecko", queryset=Person.objects.all(),
-                                              widget=forms.Select)
+    person = forms.ModelChoiceField(label="Wybierz dziecko", queryset=Person.objects.all(),
+                                    widget=forms.Select)
     date_of_entry = forms.DateField(label="Wpisz datę pomiaru", help_text="RRRR-MM-DD")
     weight = forms.FloatField(label="Waga dziecka", help_text="Waga w kg", validators=[check_weight])
     height = forms.FloatField(label="Wzrost dziecka", help_text="Wzrost w cm", validators=[check_height])
     head_circuit = forms.FloatField(label="Obwód głowy dziecka", help_text="Obwód głowy w cm")
     additional_information = forms.CharField(label="Informacje dodatkowe", widget=forms.Textarea)
+
+

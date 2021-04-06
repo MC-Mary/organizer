@@ -1,55 +1,143 @@
 {% extends 'base.html' %}
 {% block content %}
+{% load static %}
 
 <table class="table">
-    <tbody>
-        <thread class="th_table">
-            <tr>
-                <td>{{ person_detail.first_name }} {{ person_detail.second_name }}</td>
-            </tr>
-        </thread>
-        <tr>
-            <th>DANE SZCZEGÓŁOWE</th>
-        </tr>
-        <tr>
-            <td>
-                Data urodzenia: {{ person_detail.date_of_birth }}<br>
-                Płeć: {{ person_detail.get_gender_display}}<br>
-                Aktualny wiek: {{ person_age }}
-            </td>
-            <td><a href="/person/delete/{{person_detail.id}}/">USUŃ WPIS</a></td>
-        </tr>
-        <tr>
-            <th>ROZWÓJ DZIECKA</th>
-        </tr>
-        <tr>
-            <td>
-                Ostatnia waga dziecka (kg): {{ last_child_development_detail.weight }} <br>
-                Ostatni wzrost dziecka (cm): {{ last_child_development_detail.height }} <br>
-                Ostatni obwód głowy dziecka (cm): {{ last_child_development_detail.head_circuit }} <br>
-            </td>
-            <td><a href={{ last_child_development_detail.get_detail_url }}>PRZEJDŹ DO SZCZEGÓŁÓW</a></td>
-            <td>
-                <ul>
-                    {% for obj in child_development_detail %}
+    <thead class="th_table">
+    <tr>
+        <td>{{ person_detail.first_name }} {{ person_detail.second_name }}</td>
+    </tr>
+    </thead>
+    <tr>
+        <th>DANE SZCZEGÓŁOWE</th>
+    </tr>
+    <tr>
+        <td>
+            Data urodzenia: {{ person_detail.date_of_birth }}<br>
+            Płeć: {{ person_detail.get_gender_display}}<br>
+            Aktualny wiek: {{ person_age_in_days }}
+            {% if person_age_in_days == 1 %}
+                dzień
+            {% else %}
+                dni
+            {% endif %}
+            // {{ person_age_in_weeks }}
+            {% if person_age_in_weeks == 1 %}
+                tydzień
+            {% elif 5 > person_age_in_weeks and person_age_in_weeks >= 2 %}
+                tygodnie
+            {% else %}
+                tygodni
+            {% endif %}
+            //{{ person_age_in_months }}
+            {% if person_age_in_months  == 1 %}
+                miesiąc
+            {% elif 5 > person_age_in_months and person_age_in_months >= 2 %}
+                miesiące
+            {% else %}
+                miesięcy
+            {% endif %}
+            //{{ person_age_in_years }}
+            {% if person_age_in_years  == 1 %}
+                rok
+            {% elif 5 > person_age_in_years and person_age_in_years >= 2 %}
+                lata
+            {% else %}
+                lat
+            {% endif %}
+        </td>
+        <td>
+            <a href="/person/delete/{{person_detail.id}}/">USUŃ WPIS</a><br>
+            <a href="/person/update/{{person_detail.id}}/">EDYTUJ WPIS</a>
+
+        </td>
+    </tr>
+    <tr>
+        <th>ROZWÓJ DZIECKA</th>
+    </tr>
+    <tr>
+        <td>
+            Ostatnia waga dziecka: {{ last_child_development_detail.weight }}  kg <br>
+            Ostatni wzrost dziecka: {{ last_child_development_detail.height }} cm <br>
+            Ostatni obwód głowy dziecka: {{ last_child_development_detail.head_circuit }} cm <br>
+        </td>
+        <td><a href={{ last_child_development_detail.get_detail_url }}>PRZEJDŹ DO SZCZEGÓŁÓW</a></td>
+        <td>
+            <ul>
+                {% for obj in child_development_detail %}
                     <li><a href={{ obj.get_detail_url }}>{{ obj}}</a></li>
-                    {% endfor %}
-                </ul>
-            </td>
-        </tr>
-        <tr>
-            <th>SZCZEPIENIA WYMAGANE</th>
-            <th>SZCZEPIENIA WYBRANE-ZALECANE</th>
-        </tr>
-        <tr>
-            <td>
-                <ul>
+                {% endfor %}
+            </ul>
+        </td>
+    </tr>
+    <tr>
+        <th>SZCZEPIENIA WYMAGANE</th>
+        <th>SZCZEPIENIA WYBRANE-ZALECANE</th>
+    </tr>
+    <tr>
+        <td>
+            <ul>
                 {% for item in person_detail.vaccines.all%}
                     <li><a href="/vaccination/{{ person_detail.id }}/{{ item.id }}/"> {{item}} </a></li>
                 {% endfor %}
-                </ul>
+            </ul>
+        </td>
+    </tr>
+</table>
+
+<table class="table">
+    <thead class="th_table">
+    <tr>
+        <th>REKOMENDOWANY SCHEMAT ŻYWIENIOWY DLA DZIECKA</th>
+    </tr>
+    <tr>
+        {% if person_age_in_months < 12 %}
+            <td>
+                <img src="{% static 'jpg/schemat żywienia niemowląt.PNG'%}"
+                     alt="schemat żywienia dziecka w 1 roku życia" width="800">
             </td>
-        </tr>
-    </tbody>
+        {% else %}
+            <td>
+                <img src="{% static 'jpg/piramida-dzieci-mlodziez_v5-01_auto_600x600.png'%}"
+                     alt="piramida zdrowego żywienia" width="400">
+            </td>
+            <td>
+            <div>
+                <p>
+                Zasady zdrowego żywienia związane z <br>
+                    Piramidą Zdrowego Żywienia Aktywności Fizycznej dla dzieci i młodzieży:
+                </p>
+                <ul>
+                    <li>Jedz posiłki regularnie (5 posiłków co 3-4 godziny).</li>
+                    <li>Warzywa i owoce jedz jak najczęściej i w jak największej ilości.</li>
+                    <li>Jedz produkty zbożowe, zwłaszcza pełnoziarniste.</li>
+                    <li>Codziennie pij co najmniej 3-4 szklanki mleka. <br>
+                        Możesz je zastąpić jogurtem naturalnym, kefirem i – częściowo – serem.</li>
+                    <li>Jedz ryby, nasiona roślin strączkowych i jaja. Wybieraj chude mięso. <br>
+                        Ograniczaj spożycie produktów mięsnych przetworzonych.</li>
+                    <li>Ograniczaj spożycie tłuszczów zwierzęcych. Zastępuj je olejami roślinnymi.</li>
+                    <li>Unikaj spożycia cukru, słodyczy i słodkich napojów. <br>
+                        Zastępuj je owocami i orzechami.</li>
+                    <li>Nie dosalaj potraw. Unikaj słonych przekąsek i produktów typu fast food.</li>
+                    <li>Pamiętaj o piciu wody do posiłku i między posiłkami.</li>
+                    <li>Bądź codziennie aktywny fizycznie w szkole i poza szkołą.</li>
+                </ul>
+            </div>
+            </td>
+        {% endif %}
+    </tr>
+    <tr>
+        <td>
+            {% if person_age_in_months >= 5 and person_age_in_months < 12 %}
+                <ul>
+                {% for item in diet_for_person_age_in_months %}
+                    Wiek dziecka: {{item.age_of_child }} miesięcy
+                    <li> DZIECKO KARMIONE NATURALNIE: <br> {{item.nature_feeding  }}</li>
+                    <li> DZIECKO KARMIONE SZTUCZNIE: <br> {{item.artificial_feeding  }}</li>
+                {% endfor %}
+                </ul>
+            {% endif %}
+        </td>
+    </tr>
 </table>
 {% endblock %}

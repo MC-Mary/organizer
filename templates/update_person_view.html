@@ -1,0 +1,32 @@
+{%  extends 'base.html' %}
+{% block content %}
+
+    <form method="POST">
+    {% csrf_token %}
+
+        <p><label for="first_name"> Podaj imię:</label>
+            <input type="text" name="first_name" id="first_name"
+                   value="{{ person_id.first_name }}"></p>
+        <p><label for="second_name"> Podaj nazwisko:</label>
+            <input type="text" name="second_name" id="second_name" value="{{ person_id.second_name }}"></p>
+        <p><label for="date_of_birth"> Podaj datę urodzenia dziecka:</label>
+            <input type="datetime-local" name="date_of_birth" id="date_of_birth"
+                   value="{{ person_id.date_of_birth }}">Podaj datę w formacie: RRRR-MM-DD</p>
+
+        <p><label for="gender"> Podaj płeć dziecka:</label>
+            <select name="gender" id="gender">
+            {% for item in persons %}
+                {%  if item == person_it %}
+                <option selected value="{{ item }}">{{ item.get_gender_display }}</option>
+                    {%  else %}
+                <option value="{{ item }}">{{ item.get_gender_display }}</option>
+                {%  endif %}
+            {% endfor %}
+            </select></p>
+
+        <p><input type="submit" value="EDYTUJ"></p>
+    </form>
+
+{% endblock %}
+
+

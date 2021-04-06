@@ -1,3 +1,4 @@
+{% load static %}
 <!doctype html>
 <html lang="en">
 <head>
@@ -7,7 +8,8 @@
     {% include 'menu_bar.html' %}
 
 {% block content %}
-    Strona główna
+<img src="{% static 'jpg/align-fingers-71282.jpg' %}" width="700"
+     title="rozwój dziecka">
 {% endblock %}
 
 </body>

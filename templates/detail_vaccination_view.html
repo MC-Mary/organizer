@@ -12,7 +12,7 @@
             <td>
                <ul>
                     <li> Zaszczepione dziecko: {{ person_detail }}</li>
-                    <li> Szczepionka: <a href="{{ object.get_detail_url }}?prev={{ request.path|urlencode }}">{{ object.name_of_vaccine }} </a></li>
+                    <li> Szczepionka: <a href="{{ object.get_detail_url }}"> {{ object.name_of_vaccine }} </a></li>
                     <li> Data zaszczepienia: {{ vaccination_detail.date_of_vaccination }}</li>
                     <li> Dodatkowe informacje: {{ vaccination_detail.additional }}</li>
                 </ul>

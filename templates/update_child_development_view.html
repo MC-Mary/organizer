@@ -1,0 +1,34 @@
+{%  extends 'base.html' %}
+{% block content %}
+
+    <form method="POST">
+    {% csrf_token %}
+
+        <p><label for="person"> Wybierz dziecko:</label>
+            <select name="person">
+                {% for item in person_detail %}
+                    {% if item == child_development_detail.person %}
+                        <option selected value="{{ item.id }}">{{ item }}</option>
+                    {% else %}
+                        <option value="{{ item.id }}">{{ item }}</option>
+                    {% endif %}
+                {% endfor %}
+            </select>
+        </p>
+        <p><label for="date_of_entry"> Wpisz datę pomiaru :</label>
+            <input type="datetime-local" name="date_of_entry" id="date_of_entry"
+                   value="{{ child_development_detail.date_of_entry }}"> Format daty do wpisu: RRRR-MM-DD</p>
+        <p><label for="weight"> Waga dziecka w kg:</label>
+            <input type="number" name="weight" id="weight" value="{{ child_development_detail.weight }}"></p>
+        <p><label for="height"> Wzrost dziecka w cm:</label>
+            <input type="number" name="height" id="height" value="{{ child_development_detail.height }}"></p>
+        <p><label for="head_circuit"> Obwód głowy dziecka w cm:</label>
+            <input type="number" name="head_circuit" id="head_circuit"
+                   value="{{ child_development_detail.head_circuit}}"></p>
+        <p><label for="additional_information"> Informacje dodatkowe:</label>
+            <textarea name="additional_information" id="additional_information"
+                      value="{{ child_development_detail.additional_information}}"></textarea></p>
+        <p><input type="submit" value="EDYTUJ"></p>
+    </form>
+
+{% endblock %}

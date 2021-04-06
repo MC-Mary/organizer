@@ -1,29 +1,61 @@
 {% extends 'base.html' %}
 {% block content %}
+    {% load static %}
 
 <table class="table">
     <tbody>
-        <thread class="th_table">
+        <thead class="th_table">
             <tr>
-                <td>Widok szczegółowy rozwoju dziecka: {{ object.person_full_name }}</td>
+                <td>Widok szczegółowy rozwoju dziecka: {{ object.person }}</td>
             </tr>
-        </thread>
+            <tr>
+                <td>Data urodzenia dziecka: {{object.person.date_of_birth}}</td>
+            </tr>
+        </thead>
         <tr>
             <td>
                <ul>
-                    <li> Data wpisu: {{ object.date_of_entry }}</li>
-                    <li> Waga dziecka w kg: {{ object.weight}}</li>
-                    <li> Wzrost dziecka w cm: {{ object.height}}</li>
-                    <li> Obwód głowy dziecka w cm: {{ object.head_circuit}}</li>
-                    <li> Dodatkowe informacje: {{ object.additional_information}}</li>
-                </ul>
+                   <li> Data wpisu: {{ object.date_of_entry }}</li>
+                   <li> Wiek dziecka w dniu wpisu: {{ person_age_on_measurement_day_in_days }}
+                        {% if person_age_on_measurement_day_in_days == 1 %}
+                            dzień
+                        {% else %}
+                            dni
+                        {% endif %}
+                        // {{ person_age_on_measurement_day_in_months }}
+                        {% if person_age_on_measurement_day_in_months  == 1 %}
+                            miesiąc
+                        {% elif 5 > person_age_on_measurement_day_in_months and person_age_on_measurement_day_in_months >= 2 %}
+                            miesiące
+                        {% else %}
+                            miesięcy
+                        {% endif %}
+                        // {{ person_age_on_measurement_day_in_years }}
+                        {% if person_age_on_measurement_day_in_years  == 1 %}
+                            rok
+                        {% elif 5 > person_age_on_measurement_day_in_years and person_age_on_measurement_day_in_years >= 2 %}
+                            lata
+                        {% else %}
+                            lat
+                        {% endif %}
+                   </li>
+                   <li> Waga dziecka: {{ object.weight}} kg</li>
+                   <li> Wzrost dziecka: {{ object.height}} cm</li>
+                   <li> Obwód głowy dziecka: {{ object.head_circuit}} cm</li>
+                   <li> Dodatkowe informacje: {{ object.additional_information}}</li>
+               </ul>
+            <p><a href="/childdevelopment/delete/{{object.id}}/">USUŃ WPIS</a></p>
+            <p><a href="/childdevelopment/update/{{object.id}}/">EDYTUJ WPIS</a></p>
             </td>
-            <td><a href="/childdevelopment/delete/{{object.id}}/">USUŃ WPIS</a></td>
+            <td> <img src="{% static 'jpg/f_obw_glowy.jpg' %}" width="500"
+                      title="siatka centylowa dziewczynka obwód głowy"> </td>
         </tr>
         <tr>
-            <td> {{ link }} </td>
+            <td> <img src="{% static 'jpg/f_wzrost.jpg' %}" width="500"
+                      title="siatka centylowa dziewczynka wzrost"> </td>
+            <td> <img src="{% static 'jpg/f_waga.jpg' %}" width="500"
+                      title="siatka centylowa dziewczynka waga"> </td>
         </tr>
-    </tbody>
 </table>
 
 {% endblock %}
