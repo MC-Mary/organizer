@@ -1,7 +1,7 @@
 from django import forms
 from django.core.exceptions import ValidationError
 
-from memo_for_you.models import GENDER, Vaccine, Person, ChildDevelopment
+from memo_for_you.models import GENDER, Vaccine, Person
 from memo_for_you.validators import check_length,  check_weight, check_height
 
 
@@ -46,5 +46,3 @@ class ChildDevelopmentForm(forms.Form):
     height = forms.FloatField(label="Wzrost dziecka", help_text="Wzrost w cm", validators=[check_height])
     head_circuit = forms.FloatField(label="Obwód głowy dziecka", help_text="Obwód głowy w cm")
     additional_information = forms.CharField(label="Informacje dodatkowe", widget=forms.Textarea)
-
-

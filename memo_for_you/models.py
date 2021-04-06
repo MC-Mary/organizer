@@ -69,6 +69,7 @@ class Diet(models.Model):
     def __str__(self):
         return f"{self.age_of_child}"
 
+
 ALLERGENS = (
     (1, "bez laktozy"),
     (2, "bez glutenu"),
