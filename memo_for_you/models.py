@@ -66,6 +66,7 @@ class Vaccination(models.Model):
     def __str__(self):
         return f"{self.vaccine_id} wykonana u {self.person_id}"
 
+
 class ChildDevelopment(models.Model):
     """
     Shows structure for a child development model and relation with person model.

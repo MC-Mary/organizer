@@ -27,7 +27,8 @@ def test_add_person(client, person, users):
     response = client.post(reverse('add_person'), {'first_name': first_name, 'second_name': second_name,
                                                    'date_of_birth': date_of_birth, 'gender': gender})
     assert response.status_code == 302
-    Person.objects.get(first_name=first_name, second_name=second_name, date_of_birth=date_of_birth, gender=gender)
+    Person.objects.get(first_name=first_name, second_name=second_name,
+                       date_of_birth=date_of_birth, gender=gender)
     assert response.url == reverse('add_person')
 
 
@@ -64,10 +65,10 @@ def test_add_child_development(client, person, child_development, users):
     head_circuit = '53'
     additional_information = 'fictional information'
 
-    response = client.post(reverse('add_child_development'), {'person': person, 'date_of_entry': date_of_entry,
-                                                              'weight': weight, 'height': height,
-                                                              'head_circuit': head_circuit,
-                                                              'additional_information': additional_information})
+    response = client.post(reverse('add_child_development'),
+                           {'person': person, 'date_of_entry': date_of_entry,
+                            'weight': weight, 'height': height, 'head_circuit': head_circuit,
+                            'additional_information': additional_information})
     assert response.status_code == 302
     ChildDevelopment.objects.get(person=person, date_of_entry=date_of_entry, weight=weight, height=height,
                                  head_circuit=head_circuit, additional_information=additional_information)

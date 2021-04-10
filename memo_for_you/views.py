@@ -80,7 +80,8 @@ class AddPerson(LoginRequiredMixin, View):
     """
     Create new person in data base and shows list of all persons in data base.
     ...
-    :return: if user is logged in, and if dates are correct, new person appear in all persons list on add_person view.
+    :return: if user is logged in, and if dates are correct,
+    new person appear in all persons list on add_person view.
     If user is not logged out or not register, shows login view.
     """
     def get(self, request):
@@ -251,7 +252,6 @@ class UpdateVaccination(LoginRequiredMixin, View):
         return render(request, 'update_vaccination_view.html', {'vaccines': vaccines,
                       'vaccination_detail': vaccination_detail, 'persons': persons})
 
-
     def post(self, request, person_id, vaccine_id):
         vaccination_detail = Vaccination.objects.get(vaccine_id=vaccine_id, person_id=person_id)
 
@@ -347,6 +347,7 @@ class ChildDevelopmentList(LoginRequiredMixin, View):
 
         ctx = {'object': child_development_detail, 'person_detail': person_detail}
         return render(request, 'child_development_list_view.html', ctx)
+
 
 class DeleteChildDevelopment(LoginRequiredMixin, View):
     """
