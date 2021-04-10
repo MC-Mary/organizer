@@ -10,6 +10,8 @@
     </thead>
     <tr>
         <th>DANE SZCZEGÓŁOWE</th>
+        <th></th>
+        <th></th>
     </tr>
     <tr>
         <td>
@@ -47,13 +49,16 @@
             {% endif %}
         </td>
         <td>
-            <a href="/person/delete/{{person_detail.id}}/">USUŃ WPIS</a><br>
+            <a href="/person/delete/{{person_detail.id}}/">USUŃ WPIS</a>
+        </td>
+        <td>
             <a href="/person/update/{{person_detail.id}}/">EDYTUJ WPIS</a>
-
         </td>
     </tr>
     <tr>
         <th>ROZWÓJ DZIECKA</th>
+        <th></th>
+        <th></th>
     </tr>
     <tr>
         <td>
@@ -61,29 +66,45 @@
             Ostatni wzrost dziecka: {{ last_child_development_detail.height }} cm <br>
             Ostatni obwód głowy dziecka: {{ last_child_development_detail.head_circuit }} cm <br>
         </td>
-        <td><a href={{ last_child_development_detail.get_detail_url }}>PRZEJDŹ DO SZCZEGÓŁÓW</a></td>
         <td>
-            <ul>
-                {% for obj in child_development_detail %}
-                    <li><a href={{ obj.get_detail_url }}>{{ obj}}</a></li>
-                {% endfor %}
-            </ul>
+            <a href={{ last_child_development_detail.get_detail_url }}>PRZEJDŹ DO SZCZEGÓŁÓW WPISU</a><br>
+            <a href="/childdevelopmentlist/{{ person_detail.id }}/">PRZEJDŹ DO LISTY WPISÓW DZIECKA</a><br>
+        </td>
+        <td>
+            <a href="/addchilddevelopment/">DODAJ WPIS</a>
         </td>
     </tr>
     <tr>
         <th>SZCZEPIENIA WYMAGANE</th>
         <th>SZCZEPIENIA WYBRANE-ZALECANE</th>
+        <th></th>
     </tr>
     <tr>
         <td>
             <ul>
                 {% for item in person_detail.vaccines.all%}
+                    {% if item.type == 1 %}
                     <li><a href="/vaccination/{{ person_detail.id }}/{{ item.id }}/"> {{item}} </a></li>
+                    {% endif %}
                 {% endfor %}
             </ul>
         </td>
+        <td>
+            <ul>
+                {% for item in person_detail.vaccines.all%}
+                    {% if item.type == 2 %}
+                    <li><a href="/vaccination/{{ person_detail.id }}/{{ item.id }}/"> {{item}} </a></li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+        </td>
+        <td>
+            <a href="/addvaccination/">DODAJ SZCZEPIENIE</a>
+        </td>
     </tr>
 </table>
+
+
 
 <table class="table">
     <thead class="th_table">

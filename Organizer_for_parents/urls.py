@@ -28,17 +28,20 @@ urlpatterns = [
     path('vaccination/<int:person_id>/<int:vaccine_id>/', views.DetailVaccination.as_view(),
          name='vaccination'),
     path('childdevelopment/<int:id>/', views.DetailChildDevelopment.as_view(), name='child_development'),
+    path('childdevelopmentlist/<int:id>/', views.ChildDevelopmentList.as_view(), name='child_development_list'),
     path('person/delete/<int:id>/', views.DeletePerson.as_view(), name='delete_person'),
-    path('person/update/<int:id>/', views.UpdatePerson.as_view(), name='update_person'),
     path('vaccination/delete/<int:person_id>/<int:vaccine_id>/', views.DeleteVaccination.as_view(),
          name='delete_vaccination'),
     path('childdevelopment/delete/<int:id>/', views.DeleteChildDevelopment.as_view(),
          name='delete_child_development'),
+
+    path('person/update/<int:id>/', views.UpdatePerson.as_view(), name='update_person'),
+    path('vaccination/update/<int:person_id>/<int:vaccine_id>/', views.UpdateVaccination.as_view(),
+         name='update_vaccination'),
     path('childdevelopment/update/<int:id>/', views.UpdateChildDevelopment.as_view(),
          name='update_child_development'),
 
     path('login/', views.LoginView.as_view(), name='login'),
     path('logout/', views.LogoutView.as_view(), name='logout'),
     path('register/', views.RegisterView.as_view(), name='register'),
-    # path('accounts/', include('django.contrib.auth.urls')),
 ]

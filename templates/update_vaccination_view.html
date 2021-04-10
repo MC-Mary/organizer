@@ -1,0 +1,38 @@
+{%  extends 'base.html' %}
+{% block content %}
+
+    <form method="POST">
+    {% csrf_token %}
+
+        <p><label for="vaccine"> Wybierz szczepienie:</label>
+            <select name="vaccine">
+                {% for item in vaccines %}
+                    {% if item == vaccination_detail.vaccine_id %}
+                        <option selected value="{{ item.id }}">{{ item }}</option>
+                    {% else %}
+                        <option value="{{ item.id }}">{{ item }}</option>
+                    {% endif %}
+                {% endfor %}
+            </select>
+        </p>
+        <p><label for="person"> Wybierz osobę:</label>
+            <select name="person">
+                {% for item in persons %}
+                    {% if item == vaccination_detail.person_id %}
+                        <option selected value="{{ item.id }}">{{ item }}</option>
+                    {% else %}
+                        <option value="{{ item.id }}">{{ item }}</option>
+                    {% endif %}
+                {% endfor %}
+            </select>
+        </p>
+        <p><label for="date_of_vaccination"> Podaj date szczepienia:</label>
+            <input type="datetime-local" name="date_of_vaccination" id="date_of_vaccination"
+                   value="{{ vaccination_detail.date_of_vaccination }}"> Format daty do wpisu: RRRR-MM-DD</p>
+        <p><label for="additional"> Informacje dodatkowe:</label>
+            <textarea name="additional" id="additional"
+                      value="{{ vaccination_detail.additional}}"></textarea></p>
+        <p><input type="submit" value="EDYTUJ"></p>
+    </form>
+
+{% endblock %}

@@ -7,12 +7,14 @@ from memo_for_you.models import Vaccine, Person, Vaccination, ChildDevelopment, 
 
 @pytest.fixture
 def client():
+    """Create object client in tests database."""
     c = Client()
     return c
 
 
 @pytest.fixture
 def users():
+    """Create 10 objects of users in test database."""
     users = []
     for x in range(10):
         u = User.objects.create(username=str(x))
@@ -22,6 +24,7 @@ def users():
 
 @pytest.fixture
 def vaccine():
+    """Create 10 objects of vaccine in test database."""
     vaccine_list = []
     for x in range(10):
         v = Vaccine.objects.create(name_of_vaccine=str(x), description='brak opisu',
@@ -29,35 +32,10 @@ def vaccine():
         vaccine_list.append(v)
     return vaccine_list
 
-# 1 OPCJA:
-# @pytest.fixture
-# def person(vaccination):
-#     person_list = []
-#     for x in range(10):
-#         p = Person.objects.create(first_name=str(x), second_name=str(x), date_of_birth='2020-03-03',
-#                                   gender='1', vaccines=vaccination[x])
-#         person_list.append(p)
-#     return person_list
-
-# 3 OPCJA:
-# @pytest.fixture
-# def person(vaccine):
-#     count = 1
-#     person_list = []
-#     for v in vaccine:
-#         p = Person.objects.create(first_name=str(count), second_name=str(count+1),
-#         date_of_birth='2020-03-03', gender='1')
-#         p.vaccines.set(v)
-#         count += 1
-#         person_list.append(p)
-#     return person_list
-
-# 2 OPCJA:
-# W tym wypadku podkreśla się  p.vaccines.add(vaccine[x])
-
 
 @pytest.fixture
 def person():
+    """Create 10 objects of person in test database."""
     person_list = []
     for x in range(10):
         p = Person.objects.create(first_name=str(x), second_name=str(x), date_of_birth='2020-03-03',
@@ -68,8 +46,9 @@ def person():
 
 @pytest.fixture
 def vaccination(vaccine, person):
+    """Create 9 objects of vaccination in test database."""
     vaccination_list = []
-    for x in range(10):
+    for x in range(9):
         vc = Vaccination.objects.create(vaccine_id=vaccine[x], person_id=person[x],
                                         date_of_vaccination='2020-03-03', additional='dodatkowe informacje')
         vaccination_list.append(vc)
@@ -78,11 +57,12 @@ def vaccination(vaccine, person):
 
 @pytest.fixture
 def child_development(person):
+    """Create 10 objects of child development in test database."""
     count = 1
     child_development_list = []
     for p in person:
-        chd = ChildDevelopment.objects.create(person_full_name=p, date_of_entry=count, weight='1',
-                                              height='2', head_circuit='3', additional_information='info')
+        chd = ChildDevelopment.objects.create(person=p, date_of_entry='2020-03-20', weight='1',
+                                              height='2', head_circuit='3', additional_information=count)
         count += 1
         child_development_list.append(chd)
     return child_development_list
@@ -90,6 +70,7 @@ def child_development(person):
 
 @pytest.fixture
 def diet():
+    """Create 10 objects of diet in test database."""
     diet_list = []
     for x in range(10):
         d = Diet.objects.create(age_of_child=x, nature_feeding=str(x), artificial_feeding='No')

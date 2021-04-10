@@ -51,6 +51,7 @@
                </ul>
             </td>
             <td>
+                {% if person_age_on_measurement_day_in_months <= 60 %}
                 <div id="carousel-percentile_grid" class="carousel slide">
                     <!-- Wskaźniki w postaci kropek -->
                     <ul class="carousel-indicators">
@@ -98,6 +99,10 @@
                     <a class="right carousel-control" href="#carousel-percentile_grid" data-slide="next">
                     <span class="icon-next"></span></a>
                 </div>
+                {% else %}
+                <a href="http://oblicz-bmi.pl/bmi-dzieci-mlodziezy.html" target="_blank" rel="noopener">
+                    OBLICZ BMI DZIECKA --> PRZEJDŹ DO KALKULATORA </a>
+                {% endif %}
             </td>
         </tr>
         <tr>

@@ -7,6 +7,15 @@ TYPE_OF_VACCINE = (
 
 
 class Vaccine(models.Model):
+    """
+    Shows structure for a vaccine model.
+    ...
+    :param str self.name_of_vaccine: name of vaccine- string
+    :param str self.get_type_display(): name of type of vaccine from tuple named choices- string
+    :param str self.recommended_age: recommended age for the chosen vaccine - integer
+    ...
+    :return: url for chosen vaccine
+    """
     name_of_vaccine = models.CharField(max_length=80, unique=True)
     description = models.CharField(max_length=255, default='brak opisu')
     recommended_age = models.CharField(max_length=255, default='wg tabeli')
@@ -26,6 +35,14 @@ GENDER = (
 
 
 class Person(models.Model):
+    """
+    Shows structure for a person model and relation with vaccine model.
+    ...
+    :param str self.first_name: name of person
+    :param str self.second_name: second name of person
+    ...
+    :return: url for chosen person
+    """
     first_name = models.CharField(max_length=50)
     second_name = models.CharField(max_length=90)
     date_of_birth = models.DateField()
@@ -40,13 +57,24 @@ class Person(models.Model):
 
 
 class Vaccination(models.Model):
+    """Shows structure for a vaccination model and relations with vaccine  model and person model."""
     vaccine_id = models.ForeignKey(Vaccine, on_delete=models.CASCADE)
     person_id = models.ForeignKey(Person, on_delete=models.CASCADE)
     date_of_vaccination = models.DateField()
     additional = models.TextField(null=True)
 
+    def __str__(self):
+        return f"{self.vaccine_id} wykonana u {self.person_id}"
 
 class ChildDevelopment(models.Model):
+    """
+    Shows structure for a child development model and relation with person model.
+    ...
+    :param str self.person: shows name and second name of chosen person from person model.
+    :param str self.date_of_entry: date when chosen measurement from child development model was made.
+    ...
+    :return: url for chosen child development.
+    """
     person = models.ForeignKey(Person, on_delete=models.CASCADE)
     date_of_entry = models.DateField()
     weight = models.FloatField()
@@ -62,6 +90,11 @@ class ChildDevelopment(models.Model):
 
 
 class Diet(models.Model):
+    """
+    Shows structure for a diet model.
+    ...
+    :param str self.age_of_child: shows name and second name of chosen person from person model.
+    """
     age_of_child = models.IntegerField()
     nature_feeding = models.TextField()
     artificial_feeding = models.TextField()
@@ -80,6 +113,7 @@ ALLERGENS = (
 
 
 class Recipe(models.Model):
+    """Shows structure for a recipe model."""
     name = models.CharField(max_length=255)
     age_of_child = models.IntegerField(default=12)
     ingredients = models.TextField(null=True)
@@ -89,6 +123,7 @@ class Recipe(models.Model):
 
 
 class Hospitalization(models.Model):
+    """Shows structure for a hospitalization model."""
     person_full_name = models.ForeignKey(Person, on_delete=models.CASCADE)
     name_of_hospital = models.CharField(max_length=255)
     date_of_entry = models.DateField()
@@ -101,6 +136,7 @@ class Hospitalization(models.Model):
 
 
 class MedicalClinic(models.Model):
+    """Shows structure for a medical clinic model."""
     person_full_name = models.ForeignKey(Person, on_delete=models.CASCADE)
     name_of_clinic = models.CharField(max_length=255)
     address = models.CharField(max_length=255, null=True)

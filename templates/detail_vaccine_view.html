@@ -11,7 +11,6 @@
                 </p>
                 <ul>
                     <li> Nazwa: {{ object.name_of_vaccine }}</li>
-{#                    <li> id: {{ object.id}}</li>#}
                     <li> Opis: {{ object.description }}</li>
                     <li> Rekomendowany wiek: <br> {{ object.recommended_age }}</li>
                     <li> Typ szczepionki: {{ object.get_type_display }}</li>
@@ -23,7 +22,8 @@
             </td>
             <td>
                 <p>
-                    <img src="{% static 'jpg/program_szczepien_ochronnych.jpg' %}" width="800" title="schemat szczepień ochronnych">
+                    <img src="{% static 'jpg/program_szczepien_ochronnych.jpg' %}" width="800"
+                         title="schemat szczepień ochronnych">
                 </p>
             </td>
         </tr>

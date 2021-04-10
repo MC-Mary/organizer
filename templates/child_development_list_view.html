@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load static %}
+
+<table class="table">
+    <tbody>
+        <thread class="th_table">
+            <tr>
+                <td>Lista wpisów rozwoju dziecka:</td>
+                <td>{{ person_detail.first_name}} {{ person_detail.second_name}}</td>
+            </tr>
+        </thread>
+        <tr>
+            <td>
+            <ul>
+                {% for obj in object %}
+                    <li><a href={{ obj.get_detail_url }}>{{ obj}}</a></li>
+                {% endfor %}
+            </ul>
+            </td>
+            <td>
+                <img src="{% static 'jpg/shutterstock_557867149.jpg'%}" alt="rozwój dziecka" width="700">
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+{% endblock %}
+

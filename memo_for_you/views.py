@@ -11,11 +11,21 @@ from django.views import View
 
 
 class Index(View):
+    """
+    Home page view
+    ...
+    :return: is back to base.html.
+    """
     def get(self, request):
         return render(request, 'base.html')
 
 
 class LoginView(View):
+    """
+    Login view
+    ...
+    :return: if user is logged in, goes to 'base.html', else stay by login view.
+    """
     def get(self, request):
         form = LoginForm()
         return render(request, 'object_list_view.html', {'form': form})
@@ -34,11 +44,21 @@ class LoginView(View):
 
 class LogoutView(View):
     def get(self, request):
+        """
+        Logout view
+        ...
+        :return: if user is logged out, goes to 'base.html'.
+        """
         logout(request)
         return redirect(reverse('base'))
 
 
 class RegisterView(View):
+    """
+    Registration view
+    ...
+    :return: if user is register, goes to login view, else stay by registration view.
+    """
     def get(self, request):
         form = RegisterForm()
         return render(request, 'object_list_view.html', {'form': form})
@@ -57,6 +77,12 @@ class RegisterView(View):
 
 
 class AddPerson(LoginRequiredMixin, View):
+    """
+    Create new person in data base and shows list of all persons in data base.
+    ...
+    :return: if user is logged in, and if dates are correct, new person appear in all persons list on add_person view.
+    If user is not logged out or not register, shows login view.
+    """
     def get(self, request):
         form = PersonForm()
         person = Person.objects.all()
@@ -74,6 +100,12 @@ class AddPerson(LoginRequiredMixin, View):
 
 
 class DetailPerson(LoginRequiredMixin, View):
+    """
+    Shows all information about chosen person and all information, that are related with these person.
+    ...
+    :param: id: pk that is id of chosen person.
+    :return: if user is logged in shows person view of chosen person, else shows login view.
+    """
     def get(self, request, id):
         person_detail = Person.objects.get(id=id)
         person_age_in_days = (datetime.now().date() - person_detail.date_of_birth).days
@@ -81,7 +113,6 @@ class DetailPerson(LoginRequiredMixin, View):
         person_age_in_months = int(person_age_in_weeks // 4.33)
         person_age_in_years = round((person_age_in_weeks / 52), 1)
 
-        recommended_diet = Diet.objects.all()
         diet_for_person_age_in_months = Diet.objects.filter(age_of_child__icontains=person_age_in_months)
 
         child_development_detail = list(ChildDevelopment.objects.filter(
@@ -96,19 +127,34 @@ class DetailPerson(LoginRequiredMixin, View):
                'last_child_development_detail': last_child_development_detail,
                'person_age_in_weeks': person_age_in_weeks, 'person_age_in_days': person_age_in_days,
                'person_age_in_months': person_age_in_months, 'person_age_in_years': person_age_in_years,
-               'recommended_diet': recommended_diet,
                'diet_for_person_age_in_months': diet_for_person_age_in_months}
         return render(request, 'detail_person_view.html', ctx)
 
 
 class DeletePerson(LoginRequiredMixin, View):
+    """
+    Deletes information about chosen person.
+    ...
+    :param: id: pk that is id of chosen person.
+    :return: if user is logged in after delete shows add person view,, else shows login view.
+    """
     def get(self, request, id):
-        person_id = Person.objects.get(id=id)
-        person_id.delete()
+        person_detail = Person.objects.get(id=id)
+        return render(request, 'delete_object_view.html', {'object': person_detail})
+
+    def post(self, request, id):
+        person_detail = Person.objects.get(id=id)
+        person_detail.delete()
         return redirect(reverse('add_person'))
 
 
 class UpdatePerson(LoginRequiredMixin, View):
+    """
+    Updates and save in data base all information of chosen person from person model.
+    ...
+    :param: id: pk that is id of chosen person.
+    :return: if user is logged in after update shows add person view, else shows login view.
+    """
     def get(self, request, id):
         person_detail = Person.objects.get(id=id)
         gender_name = GENDER
@@ -132,6 +178,12 @@ class UpdatePerson(LoginRequiredMixin, View):
 
 
 class AddVaccination(LoginRequiredMixin, View):
+    """
+    Create new vaccination and shows it in list of all vaccines that are in data base.
+    ...
+    :return: if user is logged in, and if dates are correct, new vaccination is save in data base
+    and redirect to add vaccination view.If user is not logged out or not register, shows login view.
+    """
     def get(self, request):
         form = VaccinationForm()
         vaccine = Vaccine.objects.all()
@@ -151,13 +203,31 @@ class AddVaccination(LoginRequiredMixin, View):
 
 
 class DeleteVaccination(LoginRequiredMixin, View):
+    """
+    Deletes information about vaccination of chosen person.
+    ...
+    :param: person_id: pk that is id of chosen person.
+    :param: vaccine_id: pk that is id of chosen vaccine.
+    :return: if user is logged in after delete shows add person view, else shows login view.
+    """
     def get(self, request, person_id, vaccine_id):
+        vaccination_detail = Vaccination.objects.get(person_id=person_id, vaccine_id=vaccine_id)
+        return render(request, 'delete_object_view.html', {'object': vaccination_detail})
+
+    def post(self, request, person_id, vaccine_id):
         vaccination_detail = Vaccination.objects.get(person_id=person_id, vaccine_id=vaccine_id)
         vaccination_detail.delete()
         return redirect(reverse('add_person'))
 
 
 class DetailVaccination(LoginRequiredMixin, View):
+    """
+    Shows all information about chosen vaccination of chosen person.
+    ...
+    :param: person_id: pk that is id of chosen person.
+    :param: vaccine_id: pk that is id of chosen vaccine.
+    :return: if user is logged in shows  vaccination view of chosen vaccination, else shows login view.
+    """
     def get(self, request, person_id, vaccine_id):
         vaccine_detail = Vaccine.objects.get(id=vaccine_id)
         person_detail = Person.objects.get(id=person_id)
@@ -167,15 +237,60 @@ class DetailVaccination(LoginRequiredMixin, View):
         return render(request, 'detail_vaccination_view.html', ctx)
 
 
+class UpdateVaccination(LoginRequiredMixin, View):
+    """
+    Updates and save in data base information about chosen vaccination.
+    ...
+    :param: id: pk that is id of chosen child development.
+    :return: if user is logged in update information about chosen vaccination, else shows login view.
+    """
+    def get(self, request, person_id, vaccine_id):
+        vaccination_detail = Vaccination.objects.get(vaccine_id=vaccine_id, person_id=person_id)
+        vaccines = Vaccine.objects.all()
+        persons = Person.objects.all()
+        return render(request, 'update_vaccination_view.html', {'vaccines': vaccines,
+                      'vaccination_detail': vaccination_detail, 'persons': persons})
+
+
+    def post(self, request, person_id, vaccine_id):
+        vaccination_detail = Vaccination.objects.get(vaccine_id=vaccine_id, person_id=person_id)
+
+        person_id = request.POST.get('person')
+        vaccine_id = request.POST.get('vaccine')
+        date_of_vaccination = request.POST.get('date_of_vaccination')
+        additional = request.POST.get('additional')
+        person_detail = Person.objects.get(id=person_id)
+        vaccine_detail = Vaccine.objects.get(id=vaccine_id)
+
+        vaccination_detail.person_id = person_detail
+        vaccination_detail.vaccine_id = vaccine_detail
+
+        vaccination_detail.date_of_vaccination = date_of_vaccination
+        vaccination_detail.additional = additional
+        vaccination_detail.save()
+        return redirect(reverse('add_vaccination'))
+
+
 class DetailVaccine(View):
+    """
+    Shows all information about chosen vaccine and some information, that are related with.
+    ...
+    :param: id: pk that is id of chosen vaccine.
+    :return: shows detail vaccine view of chosen vaccine.
+    """
     def get(self, request, id):
         vaccine_detail = Vaccine.objects.get(id=id)
-        child_details = self.request.GET.get('person')
-        ctx = {'object': vaccine_detail, 'child_details': child_details}
+        ctx = {'object': vaccine_detail}
         return render(request, 'detail_vaccine_view.html', ctx)
 
 
 class AddChildDevelopment(LoginRequiredMixin, View):
+    """
+    Create new child development and shows it in list of all child developments that are in data base.
+    ...
+    :return: if user is logged in, and if dates are correct, new child development  is save in data base
+    and redirect to add child development view.If user is not logged out or not register, shows login view.
+    """
     def get(self, request):
         form = ChildDevelopmentForm()
         child_development = ChildDevelopment.objects.all().order_by('person', 'date_of_entry')
@@ -193,6 +308,12 @@ class AddChildDevelopment(LoginRequiredMixin, View):
 
 
 class DetailChildDevelopment(LoginRequiredMixin, View):
+    """
+    Shows all information about chosen child development of chosen person.
+    ...
+    :param: id: pk that is id of chosen child development.
+    :return: if user is logged in shows  detail view of chosen child development, else shows login view.
+    """
     def get(self, request, id):
         child_development_detail = ChildDevelopment.objects.get(id=id)
         gender_of_the_child = child_development_detail.person.get_gender_display()
@@ -210,14 +331,47 @@ class DetailChildDevelopment(LoginRequiredMixin, View):
         return render(request, 'detail_child_development_view.html', ctx)
 
 
-class DeleteChildDevelopment(LoginRequiredMixin, View):
+class ChildDevelopmentList(LoginRequiredMixin, View):
+    """
+    Shows all information about chosen child development of chosen person.
+    ...
+    :param: id: pk that is id of chosen child development.
+    :return: if user is logged in shows  detail view of chosen child development, else shows login view.
+    """
     def get(self, request, id):
+        person_detail = Person.objects.get(id=id)
+
+        child_development_detail = list(ChildDevelopment.objects.filter(
+            person__first_name__icontains=person_detail.first_name,
+            person__second_name__icontains=person_detail.second_name).order_by('date_of_entry'))
+
+        ctx = {'object': child_development_detail, 'person_detail': person_detail}
+        return render(request, 'child_development_list_view.html', ctx)
+
+class DeleteChildDevelopment(LoginRequiredMixin, View):
+    """
+    Deletes information about chosen child development.
+    ...
+    :param: id: pk that is id of chosen child development.
+    :return: if user is logged in after delete shows add person view, else shows login view.
+    """
+    def get(self, request, id):
+        child_development_detail = ChildDevelopment.objects.get(id=id)
+        return render(request, 'delete_object_view.html', {'object': child_development_detail})
+
+    def post(self, request, id):
         child_development_detail = ChildDevelopment.objects.get(id=id)
         child_development_detail.delete()
         return redirect(reverse('add_person'))
 
 
 class UpdateChildDevelopment(LoginRequiredMixin, View):
+    """
+    Updates and save in data base information about chosen child development.
+    ...
+    :param: id: pk that is id of chosen child development.
+    :return: if user is logged in redirect to add_child_development view, else shows login view.
+    """
     def get(self, request, id):
         child_development_detail = ChildDevelopment.objects.get(id=id)
         persons = Person.objects.all()
@@ -226,12 +380,14 @@ class UpdateChildDevelopment(LoginRequiredMixin, View):
 
     def post(self, request, id):
         child_development_detail = ChildDevelopment.objects.get(id=id)
+
         person_id = request.POST.get('person')
         date_of_entry = request.POST.get('date_of_entry')
         weight = request.POST.get('weight')
         height = request.POST.get('height')
         head_circuit = request.POST.get('head_circuit')
         additional_information = request.POST.get('additional_information')
+
         person_detail = Person.objects.get(id=person_id)
 
         child_development_detail.person = person_detail
@@ -242,18 +398,3 @@ class UpdateChildDevelopment(LoginRequiredMixin, View):
         child_development_detail.additional_information = additional_information
         child_development_detail.save()
         return redirect(reverse('add_child_development'))
-
-
-# class UpdateChildDevelopment(LoginRequiredMixin, View):
-#     def get(self, request, id):
-#         child_development_detail = ChildDevelopment.objects.get(pk=id)
-#         form = ChildDevelopmentForm(instance=child_development_detail)
-#         return render(request, 'object_update_view.html', {'update_form': form})
-#
-#     def post(self, request, id):
-#         child_development_detail = ChildDevelopment.objects.get(pk=id)
-#         form = ChildDevelopmentForm(request.POST, instance=child_development_detail)
-#
-#         if form.is_valid():
-#             form.save()
-#             return redirect(reverse('add_person'))
