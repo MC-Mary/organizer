@@ -48,7 +48,7 @@ On these view you will find all information about the chosen child, like:
   
   ####
 - recommended nutrition scheme for a child ( varies depending on the current age of the child )
-  #### View for the child in age of 6 months and for the child in age above 11 months.
+  #### View for the child in age of 6 months.
   ![Children Detail Part2](memo_for_you/static/readme/dane_szczegolowe_dziecka_part2.png) 
   #### View for the child in age above 11 months.
   ![Children Detail Part3](memo_for_you/static/readme/dane_szczegolowe_dziecka_part3.png)
