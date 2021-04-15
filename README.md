@@ -1,69 +1,60 @@
 ![status badge](https://github.com/MC-Mary/organizer/blob/main/.github/workflows/main.yml/actions/workflows/style_and_testing.yml/badge.svg)
 [![codecov](https://app.codecov.io/gh/MC-Mary/organizer/branch/main/graph/badge.svg)](https://app.codecov.io/gh/MC-Mary/organizer)
 
-Thank you for your interest in my project. Below you can find some information about my app.
+Thank you for your interest in my project. 
+Below you can find some information about my app.
 
 # MEMO for YOU
-These app named "MEMO for YOU" is designed to help the parents to manage information about the child on everey step of his life.
-The assumption of the project is to save all important and less important data here,
-so that in the future you can easily and quickly find any information about the child's development.
-However, user decides what information he wants to save in the application and which will be available for him later. 
+![Home Page](memo_for_you/static/readme/homepage.png)
+This app named "MEMO for YOU" is designed to help the parents to manage information 
+about the child on every step of his life. The assumption of the project is to save all important 
+and less important data here, so that in the future you can easily and quickly find any information 
+about the child's development. However, you decide what information you want to save 
+in the application and which will be available for you later. Of course all sensitive data 
+is available only to logged in users.  
 
-![Home Page](niunius/static/niunius/readme/readme_home.png)
 
-django_app_for_off_road_club/niunius/static/niunius/readme/readme_blog.png 
+### Children in my notes
+![Children List](memo_for_you/static/readme/dzieci_w_moim_notatniku.png)
+Here you can add new child to the app and see the list of all children that already existing in the app.
 
-## Start
 
-To start exploring the project:
-1. clone this repository
-2. create the virtual environment and install requirements`pip install -r requirements.txt`
-3. configure a database - in the project directory you need to create the file named ***local_settings.py*** and add there DATABASES with details of the database connection.
-   These details will be imported by Django as in the file `setting.py` the following code is included:
-   ```python
-    try:
-        from my_django_project.local_settings import *
-    except ImportError:
-        pass
-    ```
-4. run the command `python manage.py migrate`
-5. load initial data to fill your database - use the command `python manage.py loaddata */fixtures/*.json`
-6. create a superuser to access the admin site: ` python manage.py createsuperuser`
-7. open additional terminal window and run `python -m smtpd -n -c DebuggingServer localhost:1025` - this is required by email settings, in this terminal you will see sent messages
-8. that's all, run `python manage.py runserver` and enjoy the app :-)
-
-As for the app content, besides the home page already mentioned and shown, there are few more pages. These are:
-about page, blog page, shop page, car service station page and contact page. A short description of each follows...
-
-### About
-
-This is one of articles from the blog, a specific one - with information about the club (like history, members etc.)
-
-### Blog 
-
-![Blog Page](niunius/static/niunius/readme/readme_blog.png)
-
-The blog is for articles, accessible to all users. Everyone can give a thumb up or thumb down, and see comments. 
-Extra functionalities as adding and editing articles are reserved for logged-in users.
-
-### Shop
-
-![Shop Page](niunius/static/niunius/readme/readme_shop.png)
-
-The shop is for car parts. You can search by car models or by categories, or type whatever you are looking for in the search box.
-Products are assigned to car models and to categories.
-All users can make shopping, why not. You do not have to create an account on the website as this may discourage potential clients.
-However, placing orders as a logged-in user allow you to check the orders' history on your profile page.
-
-### Car Service Station
-
-Users may review car services offer and book a visit. 
-
-### Contact
-
-The contact page with the address and the map. Additionally, user can send a message to the site/club owner.
+#### Child detail
+![Children Detail Part1](memo_for_you/static/readme/dane_szczegolowe_dziecka_part1.png)
+On these view you will find all information about the chosen child, like:
+- main information (first name, second name, age, gender, etc.)
+- child development (you will always see here the latest data about child development and 
+  url that redirect you to -> Measurement Details and -> List of Child Development Measurements)
+  
+  ##### Measurement Detail
+  ![Child Development](memo_for_you/static/readme/rozwój_dziecka.png)
+  Here you will find age of the child (on the day of measurement) and measurements detail: 
+  weight, height and circumference of the child's head that is actual for the chosen child development. 
+  In a right side you can compare the measurements on three percentile grids. Special for your convenience, 
+  the charts are selected on the moving carousel, jumping from one chart to the next. 
+  Thanks to that, they are good visible. For measurements of children above 5 years, instead of charts 
+  there would be an url available, that redirect you to the external side with BMI calculator.
+  
+  ##### List of Child Development Measurements
+  ![List of Child Developments](memo_for_you/static/readme/lista_wpisow_rozwoju_dziecka.png)
+  
+- child vaccinations (there are two lists with names of vaccinations that the child had. 
+  Those vaccinations are also urls that will redirect you to details of chosen vaccination and 
+  next to chosen vaccine)
+  ##### Vaccine Detail
+  ![Vaccine Detail](memo_for_you/static/readme/widok_szczegolowy_szczepionki.png)
+  Here is also url that redirect you to the external side, where you can find more information 
+  about vaccines.
+  
+  ####
+- recommended nutrition scheme for a child ( varies depending on the current age of the child )
+  #### View for the child in age of 6 months and for the child in age above 11 months.
+  ![Children Detail Part2](memo_for_you/static/readme/dane_szczegolowe_dziecka_part2.png) 
+  #### View for the child in age above 11 months.
+  ![Children Detail Part3](memo_for_you/static/readme/dane_szczegolowe_dziecka_part3.png)
 
 ## The end
-
-Thank you one more time for your interest.
-If you find anything should be added/amended/deleted in this project, you are very welcome to create pull requests.
+Thank you for your interest.
+If you will have some idea what it could be changed in this project, 
+you are very welcome to create pull requests. 
+I'm always open for all suggestions.
