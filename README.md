@@ -1,5 +1,4 @@
 ![status badge](https://github.com/MC-Mary/organizer/actions/workflows/main.yml/badge.svg)
-[![codecov](https://codecov.io/gh/MC-Mary/organizer/branch/main/graph/badge.svg)](https://app.codecov.io/gh/MC-Mary/organizer)
 [![codecov](https://codecov.io/gh/MC-Mary/organizer/branch/main/graph/badge.svg?token=OIJ7L92DAH)](https://codecov.io/gh/MC-Mary/organizer)
 
 Thank you for your interest in my project. 
