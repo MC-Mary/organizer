@@ -1,5 +1,6 @@
-![status badge](https://github.com/MC-Mary/organizer/blob/main/.github/workflows/main.yml/actions/workflows/style_and_testing.yml/badge.svg)
-[![codecov](https://app.codecov.io/gh/MC-Mary/organizer/branch/main/graph/badge.svg)](https://app.codecov.io/gh/MC-Mary/organizer)
+![status badge](https://github.com/MC-Mary/organizer/actions/workflows/main.yml/badge.svg)
+[![codecov](https://codecov.io/gh/MC-Mary/organizer/branch/main/graph/badge.svg)](https://codecov.io/gh/MC-Mary/organizer)
+
 
 Thank you for your interest in my project. 
 Below you can find some information about my app.
