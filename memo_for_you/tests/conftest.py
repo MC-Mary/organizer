@@ -77,6 +77,7 @@ def diet():
         diet_list.append(d)
     return diet_list
 
+
 @pytest.fixture(autouse=True)
 def _use_static_files_storage(settings):
     settings.STATICFILES_STORAGE = (
